@@ -1,0 +1,13 @@
+{
+  "name": "meisterwerk/bq-utils",
+  "description": "Handy utils that make working with the booqable-api easier.",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Meisterwerk\\BqUtils\\": "src/"
+    }
+  }
+}
