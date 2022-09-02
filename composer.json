@@ -3,7 +3,8 @@
   "description": "Handy utils that make working with the booqable-api easier.",
   "license": "MIT",
   "require": {
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "ext-curl": "*"
   },
   "autoload": {
     "psr-4": {
