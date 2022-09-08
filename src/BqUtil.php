@@ -54,20 +54,25 @@ class BqUtil
     /**
      * @throws BqRequestException
      */
-    public static function requestFunction($curlOptions, $jsonAssociative = null) {
+    public static function request($curlOptions, $jsonAssociative = false) {
         $curl = curl_init();
-
         curl_setopt_array($curl, $curlOptions);
-
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
         $response = curl_exec($curl);
-        curl_close($curl);
-
         if (curl_error($curl)) {
             throw new BqRequestException(curl_error($curl));
         } else if (isset(json_decode($response)->error)) {
             throw new BqRequestException($response);
         }
-        return json_decode($response);
+        curl_close($curl);
+        return json_decode($response, $jsonAssociative);
+    }
+    
+    /**
+     * @throws BqRequestException
+     * @deprecated see BqUtil->request, this function was renamed
+     */
+    public static function requestFunction($curlOptions, $jsonAssociative = false) {
+        return self::request($curlOptions, $jsonAssociative)
     }
 }
