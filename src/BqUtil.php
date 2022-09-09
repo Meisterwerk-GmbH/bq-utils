@@ -73,6 +73,6 @@ class BqUtil
      * @deprecated see BqUtil->request, this function was renamed
      */
     public static function requestFunction($curlOptions, $jsonAssociative = false) {
-        return self::request($curlOptions, $jsonAssociative)
+        return self::request($curlOptions, $jsonAssociative);
     }
 }
