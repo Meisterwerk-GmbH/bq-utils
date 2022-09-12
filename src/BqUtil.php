@@ -54,7 +54,7 @@ class BqUtil
     /**
      * @throws BqRequestException
      */
-    public static function request($curlOptions, $jsonAssociative = false) {
+    public static function request($curlOptions, $jsonAssociative = false, $jsonDecode = true) {
         $curl = curl_init();
         curl_setopt_array($curl, $curlOptions);
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
@@ -65,7 +65,10 @@ class BqUtil
             throw new BqRequestException($response);
         }
         curl_close($curl);
-        return json_decode($response, $jsonAssociative);
+        if($jsonDecode) {
+            return json_decode($response, $jsonAssociative);
+        }
+        return $response;
     }
 
     /**
