@@ -57,6 +57,7 @@ class BqUtil
     public static function request($curlOptions, $jsonAssociative = false, $jsonDecode = true) {
         $curl = curl_init();
         curl_setopt_array($curl, $curlOptions);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
         $response = curl_exec($curl);
         if (curl_error($curl)) {
