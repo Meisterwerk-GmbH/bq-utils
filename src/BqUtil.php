@@ -58,6 +58,9 @@ class BqUtil
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt_array($curl, $curlOptions);
         $response = curl_exec($curl);
         if (curl_error($curl)) {
