@@ -79,4 +79,9 @@ class BqUtil
     public static function requestFunction($curlOptions, $jsonAssociative = false) {
         return self::request($curlOptions, $jsonAssociative);
     }
+
+    public function getHtmlLinkToOrder($order)
+    {
+        return '<a href="https://rentshop.booqable.com/orders/' . $order->id . '">' . $order->number . '</a';
+    }
 }
