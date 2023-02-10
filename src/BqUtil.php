@@ -84,6 +84,6 @@ class BqUtil
     }
 
     public static function getOrderLinkHtml($order): string {
-        return '<a href="https://rentshop.booqable.com/orders/' . $order->id . '">' . $order->number . '</a>';
+        return '<a href="https://rentshop.booqable.com/orders/' . $order->id . '">#' . $order->number . '</a>';
     }
 }
