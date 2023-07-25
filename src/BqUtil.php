@@ -65,7 +65,7 @@ class BqUtil
         $response = curl_exec($curl);
         if (curl_error($curl)) {
             throw new BqRequestException(curl_error($curl));
-        } else if (isset(json_decode($response, $jsonAssociative)->error)) {
+        } else if (isset(json_decode($response)->error)) {
             throw new BqRequestException($response);
         }
         curl_close($curl);
