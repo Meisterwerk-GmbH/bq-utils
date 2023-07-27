@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Meisterwerk\BqUtils;
 
-
 class BqOrderCacheManager
 {
     private mixed $order = null;
 
-    // filehandle is a resource
-    // this is a special variable, holding a reference to an external resource
+    // filehandle is a resource; this is a special variable, holding a reference to an external resource
     private $filehandle;
 
     private string $cachePath;
