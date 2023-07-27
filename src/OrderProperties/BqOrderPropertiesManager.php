@@ -33,7 +33,7 @@ class BqOrderPropertiesManager
                 $propertyQuery->getIdentifier()
             );
         } elseif (count($filteredProperties) > 1) {
-            throw new RuntimeException('more than one matching property found');
+            throw new RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
         } else {
             self::updateProperty(
                 $propertyToSet->attributes->value . "\n" . $value,
