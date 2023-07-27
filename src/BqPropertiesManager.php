@@ -21,20 +21,20 @@ class BqPropertiesManager
      * @param array $propertyFields example: $propertyFields = ['identifier' => 'sprache', 'name' => 'Sprache',]
      * @throws BqRequestException
      */
-    public function createOrUpdateProperty($bqOrderId, $trackingNumber, array $propertyFields): void
+    public function createOrUpdateProperty(string $bqOrderId, string $value, array $propertyFields): void
     {
         $properties = self::getProperties($bqOrderId)->data;
         $filteredProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyFields['name']);
         $propertyToSet = array_pop($filteredProperties);
         if ($propertyToSet === null) {
             self::createProperty(
-                $trackingNumber,
+                $value,
                 $bqOrderId,
                 $propertyFields['identifier']
             );
         } else {
             self::updateProperty(
-                $propertyToSet->attributes->value . $trackingNumber,
+                $propertyToSet->attributes->value . $value,
                 $bqOrderId,
                 $propertyFields['identifier'],
                 $propertyToSet->id
@@ -47,13 +47,13 @@ class BqPropertiesManager
      */
     private function getProperties(string $orderId)
     {
-        return $this->bqRestManagerV3->get('properties?filter[owner_id]=' . $orderId);
+        return $this->bqRestManagerV3->get('properties?filter[owner_id]='.$orderId);
     }
 
     /**
      * @throws BqRequestException
      */
-    private function createProperty($value, $orderId, $propertyIdentifier): void
+    private function createProperty(string $value, string $orderId, string $propertyIdentifier): void
     {
         $postFields = [
             'property' => [
@@ -72,7 +72,7 @@ class BqPropertiesManager
     /**
      * @throws BqRequestException
      */
-    private function updateProperty($value, $orderId, $propertyIdentifier, $propertyId): void
+    private function updateProperty(string $value, string $orderId, string $propertyIdentifier, string $propertyId): void
     {
         $postFields = [
             'property' => [
@@ -84,6 +84,6 @@ class BqPropertiesManager
                 'owner_type' => "Order"
             ]
         ];
-        $this->bqRestManagerV1->put('properties/' . $propertyId, $postFields);
+        $this->bqRestManagerV1->put('properties/'.$propertyId, $postFields);
     }
 }
