@@ -17,6 +17,7 @@ class BqOrderCacheManager
     {
         $this->cachePath = $cachePath;
     }
+    
     public function __destruct()
     {
         $this->writeAndUnlock();
