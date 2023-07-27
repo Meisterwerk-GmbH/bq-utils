@@ -17,10 +17,10 @@ class RestManager
     /**
      * @throws BqRequestException
      */
-    public function get()
+    public function get(string $endpoint)
     {
         return BqUtil::request([
-            CURLOPT_URL => $this->url,
+            CURLOPT_URL => $this->url .  $endpoint,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => [
                 'Authorization: Bearer '.$this->apiKey
@@ -31,10 +31,10 @@ class RestManager
     /**
      * @throws BqRequestException
      */
-    public function put($postFields)
+    public function put(string $endpoint, $postFields)
     {
         return BqUtil::request([
-            CURLOPT_URL => $this->url,
+            CURLOPT_URL => $this->url . $endpoint,
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => json_encode($postFields),
             CURLOPT_HTTPHEADER => [
@@ -47,10 +47,10 @@ class RestManager
     /**
      * @throws BqRequestException
      */
-    public function post($postFields)
+    public function post(string $endpoint, $postFields)
     {
         return  BqUtil::request([
-            CURLOPT_URL => $this->url,
+            CURLOPT_URL => $this->url . $endpoint,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($postFields),
             CURLOPT_HTTPHEADER => [
