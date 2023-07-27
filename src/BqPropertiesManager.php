@@ -34,7 +34,7 @@ class BqPropertiesManager
             );
         } else {
             self::updateProperty(
-                $propertyToSet->attributes->value . $value,
+                $propertyToSet->attributes->value . "\n" . $value,
                 $bqOrderId,
                 $propertyFields['identifier'],
                 $propertyToSet->id
@@ -47,7 +47,7 @@ class BqPropertiesManager
      */
     private function getProperties(string $orderId)
     {
-        return $this->bqRestManagerV3->get('properties?filter[owner_id]='.$orderId);
+        return $this->bqRestManagerV3->get('properties?filter[owner_id]=' . $orderId);
     }
 
     /**
@@ -84,6 +84,6 @@ class BqPropertiesManager
                 'owner_type' => "Order"
             ]
         ];
-        $this->bqRestManagerV1->put('properties/'.$propertyId, $postFields);
+        $this->bqRestManagerV1->put('properties/' . $propertyId, $postFields);
     }
 }
