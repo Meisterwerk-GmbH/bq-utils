@@ -1,42 +1,41 @@
 <?php
 
-namespace Meisterwerk\BqUtils;
+namespace Meisterwerk\BqUtils\OrderProperties;
 
-class BqPropertiesManager
+use Meisterwerk\BqUtils\BqRequestException;
+use Meisterwerk\BqUtils\BqRestManager;
+
+class BqOrderPropertiesManager
 {
-    private const BQ_API_PATH_V1 = 'https://rentshop.booqable.com/api/1/';
-    private const BQ_API_PATH_V3 = 'https://rentshop.booqable.com/api/3/';
-
     private BqRestManager $bqRestManagerV1;
 
     private BqRestManager $bqRestManagerV3;
 
-    public function __construct(string $apiKey)
+    public function __construct(BqRestManager $bqRestManagerV1, BqRestManager $bqRestManagerV3)
     {
-        $this->bqRestManagerV1 = new BqRestManager($apiKey, self::BQ_API_PATH_V1);
-        $this->bqRestManagerV3 = new BqRestManager($apiKey, self::BQ_API_PATH_V3);
+        $this->bqRestManagerV1 = $bqRestManagerV1;
+        $this->bqRestManagerV3 = $bqRestManagerV3;
     }
 
     /**
-     * @param array $propertyFields example: $propertyFields = ['identifier' => 'sprache', 'name' => 'Sprache',]
      * @throws BqRequestException
      */
-    public function createOrUpdateProperty(string $bqOrderId, string $value, array $propertyFields): void
+    public function createOrUpdateProperty(string $orderId, string $value, BqOrderPropertyQuery $propertyQuery): void
     {
-        $properties = self::getProperties($bqOrderId)->data;
-        $filteredProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyFields['name']);
+        $properties = self::getProperties($orderId)->data;
+        $filteredProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyQuery->getName());
         $propertyToSet = array_pop($filteredProperties);
         if ($propertyToSet === null) {
             self::createProperty(
                 $value,
-                $bqOrderId,
-                $propertyFields['identifier']
+                $orderId,
+                $propertyQuery->getIdentifier()
             );
         } else {
             self::updateProperty(
                 $propertyToSet->attributes->value . "\n" . $value,
-                $bqOrderId,
-                $propertyFields['identifier'],
+                $orderId,
+                $propertyQuery->getIdentifier(),
                 $propertyToSet->id
             );
         }
