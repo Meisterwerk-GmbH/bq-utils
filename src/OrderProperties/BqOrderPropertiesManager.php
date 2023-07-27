@@ -4,6 +4,7 @@ namespace Meisterwerk\BqUtils\OrderProperties;
 
 use Meisterwerk\BqUtils\BqRequestException;
 use Meisterwerk\BqUtils\BqRestManager;
+use RuntimeException;
 
 class BqOrderPropertiesManager
 {
@@ -31,6 +32,8 @@ class BqOrderPropertiesManager
                 $orderId,
                 $propertyQuery->getIdentifier()
             );
+        } elseif (count($filteredProperties) > 1) {
+            throw new RuntimeException('more than one matching property found');
         } else {
             self::updateProperty(
                 $propertyToSet->attributes->value . "\n" . $value,
