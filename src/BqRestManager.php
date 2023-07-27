@@ -2,7 +2,7 @@
 
 namespace Meisterwerk\BqUtils;
 
-class RestManager
+class BqRestManager
 {
     private string $apiKey;
 
