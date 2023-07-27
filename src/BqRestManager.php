@@ -39,7 +39,8 @@ class BqRestManager
             CURLOPT_POSTFIELDS => json_encode($postFields),
             CURLOPT_HTTPHEADER => [
                 'Authorization: Bearer '.$this->apiKey,
-                'Content-Type: application/json'
+                'Accept: application/json',
+                'Content-Type: application/json',
             ],
         ]);
     }
