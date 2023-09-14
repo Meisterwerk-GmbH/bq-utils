@@ -30,7 +30,8 @@ class BqOrderPropertiesManager
             self::createProperty(
                 $value,
                 $orderId,
-                $propertyQuery->getIdentifier()
+                $propertyQuery->getIdentifier(),
+                $propertyQuery->getType(),
             );
         } elseif (count($filteredProperties) > 1) {
             throw new RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
@@ -39,6 +40,7 @@ class BqOrderPropertiesManager
                 $propertyToSet->attributes->value . "\n" . $value,
                 $orderId,
                 $propertyQuery->getIdentifier(),
+                $propertyQuery->getType(),
                 $propertyToSet->id
             );
         }
@@ -55,7 +57,7 @@ class BqOrderPropertiesManager
     /**
      * @throws BqRequestException
      */
-    private function createProperty(string $value, string $orderId, string $propertyIdentifier): void
+    private function createProperty(string $value, string $orderId, string $propertyIdentifier, string $propertyType): void
     {
         $postFields = [
             'property' => [
@@ -63,8 +65,8 @@ class BqOrderPropertiesManager
                 'value' => $value,
                 'owner_id' => $orderId,
                 'isNew' => 'true',
-                'property_type' => 'Property::TextField',
-                'type' => 'Property::TextField',
+                'property_type' => $propertyType,
+                'type' => $propertyType,
                 'owner_type' => 'Order',
             ],
         ];
@@ -74,15 +76,15 @@ class BqOrderPropertiesManager
     /**
      * @throws BqRequestException
      */
-    private function updateProperty(string $value, string $orderId, string $propertyIdentifier, string $propertyId): void
+    private function updateProperty(string $value, string $orderId, string $propertyIdentifier, string $propertyType, string $propertyId): void
     {
         $postFields = [
             'property' => [
                 'identifier' => $propertyIdentifier,
                 'value' => $value,
                 'owner_id' => $orderId,
-                'property_type' => 'Property::TextField',
-                'type' => 'Property::TextField',
+                'property_type' => $propertyType,
+                'type' => $propertyType,
                 'owner_type' => "Order"
             ]
         ];
