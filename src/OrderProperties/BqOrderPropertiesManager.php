@@ -31,7 +31,6 @@ class BqOrderPropertiesManager
                 $value,
                 $orderId,
                 $propertyQuery->getIdentifier(),
-                $propertyQuery->getType(),
             );
         } elseif (count($filteredProperties) > 1) {
             throw new RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
@@ -40,7 +39,7 @@ class BqOrderPropertiesManager
                 $propertyToSet->attributes->value . "\n" . $value,
                 $orderId,
                 $propertyQuery->getIdentifier(),
-                $propertyQuery->getType(),
+                $propertyToSet->attributes->type,
                 $propertyToSet->id
             );
         }
@@ -57,7 +56,7 @@ class BqOrderPropertiesManager
     /**
      * @throws BqRequestException
      */
-    private function createProperty(string $value, string $orderId, string $propertyIdentifier, string $propertyType): void
+    private function createProperty(string $value, string $orderId, string $propertyIdentifier): void
     {
         $postFields = [
             'property' => [
