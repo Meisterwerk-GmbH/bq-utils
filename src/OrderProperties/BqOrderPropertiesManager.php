@@ -58,6 +58,13 @@ class BqOrderPropertiesManager
      */
     private function createProperty(string $value, string $orderId, string $propertyIdentifier): void
     {
+        $sessionProperties = $this->bqRestManagerV1->get('session')->default_properties;
+        $matchingProperties = array_filter($sessionProperties, fn($p) => $p->identifier === $propertyIdentifier);
+        if (count($matchingProperties) === 1) {
+            $propertyType = array_pop($matchingProperties)->property_type;
+        } else {
+            throw new BqRequestException("no matching property found in session");
+        }
         $postFields = [
             'property' => [
                 'identifier' => $propertyIdentifier,
