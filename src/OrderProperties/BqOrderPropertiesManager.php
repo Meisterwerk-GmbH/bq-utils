@@ -32,7 +32,7 @@ class BqOrderPropertiesManager
                 $propertyQuery->getIdentifier(),
                 $orderId,
             );
-        } elseif (count($matchingProperties) === 1) {
+        } elseif (count($matchingProperties) === 0) {
             self::updateProperty(
                 $value,
                 $propertyQuery->getIdentifier(),
