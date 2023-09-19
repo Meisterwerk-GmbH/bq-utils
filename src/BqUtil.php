@@ -6,8 +6,8 @@ class BqUtil
 {
     public static function extractBqProperty($properties, $identifier): String {
         // array_filter keeps keys -> we have to reindex it with array_values
-        $phoneProperties = array_values(array_filter($properties, fn($p) => $p->identifier === $identifier));
-        return count($phoneProperties) === 1 ? $phoneProperties[0]->value : '';
+        $matchingProperties = array_values(array_filter($properties, fn($p) => $p->identifier === $identifier));
+        return count($matchingProperties) === 1 ? $matchingProperties[0]->value : '';
     }
 
     /**
