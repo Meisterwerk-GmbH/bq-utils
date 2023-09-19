@@ -68,9 +68,12 @@ class BqOrderPropertiesManager
         $sessionProperties = $this->bqRestManagerV1->get('session')->default_properties;
         $matchingProperties = array_filter($sessionProperties, fn($p) => $p->identifier === $propertyIdentifier);
         if (count($matchingProperties) === 1) {
-            $propertyType = array_pop($matchingProperties)->property_type;
+            $propertyType = PropertyTypes::from(array_pop($matchingProperties)->property_type);
         } else {
             throw new BqRequestException("no matching property found in session");
+        }
+        if (!$propertyType->isStringProperty()) {
+            throw new BqRequestException("property isn't a string property (allowed are: Single- and MultiLineText)");
         }
         $postFields = [
             'property' => [
@@ -78,8 +81,8 @@ class BqOrderPropertiesManager
                 'value' => $value,
                 'owner_id' => $orderId,
                 'isNew' => 'true',
-                'property_type' => $propertyType,
-                'type' => $propertyType,
+                'property_type' => $propertyType->value,
+                'type' => $propertyType->value,
                 'owner_type' => 'Order',
             ],
         ];
@@ -90,15 +93,18 @@ class BqOrderPropertiesManager
      * @throws BqRequestException
      */
     private function updateProperty(string $value, string $propertyIdentifier, $propertyToSet): void
-    {
+    {   $propertyType = PropertyTypes::from($propertyToSet->attributes->type);
+        if (!$propertyType->isStringProperty()) {
+            throw new BqRequestException("property isn't a string property (allowed are: Single- and MultiLineText)");
+        }
         $newValue = $propertyToSet->attributes->value . "\n" . $value;
         $postFields = [
             'property' => [
                 'identifier' => $propertyIdentifier,
                 'value' => $newValue,
                 'owner_id' => $propertyToSet->attributes->owner_id,
-                'property_type' => $propertyToSet->attributes->type,
-                'type' => $propertyToSet->attributes->type,
+                'property_type' => $propertyType->value,
+                'type' => $propertyType->value,
                 'owner_type' => "Order"
             ]
         ];

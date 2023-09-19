@@ -13,4 +13,13 @@ enum PropertyTypes: string
     case SELECT = 'Property::Select';
 
     case ADDRESS = 'Property::Address';
+
+    public function isStringProperty(): bool
+    {
+        return match($this)
+        {
+            PropertyTypes::TEXT_FIELD, PropertyTypes::TEXT_AREA => true,
+            PropertyTypes::PHONE, PropertyTypes::SELECT, PropertyTypes::ADDRESS => false,
+        };
+    }
 }
