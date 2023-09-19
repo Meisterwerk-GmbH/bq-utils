@@ -24,23 +24,22 @@ class BqOrderPropertiesManager
     public function createOrUpdateProperty(string $orderId, string $value, BqOrderPropertyQuery $propertyQuery): void
     {
         $properties = self::getProperties($orderId)->data;
-        $filteredProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyQuery->getName());
-        $propertyToSet = array_pop($filteredProperties);
+        $matchingProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyQuery->getName());
+        $propertyToSet = array_pop($matchingProperties);
         if ($propertyToSet === null) {
             self::createProperty(
                 $value,
-                $orderId,
-                $propertyQuery->getIdentifier()
-            );
-        } elseif (count($filteredProperties) > 1) {
-            throw new RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
-        } else {
-            self::updateProperty(
-                $propertyToSet->attributes->value . "\n" . $value,
-                $orderId,
                 $propertyQuery->getIdentifier(),
-                $propertyToSet->id
+                $orderId,
             );
+        } elseif (count($matchingProperties) === 1) {
+            self::updateProperty(
+                $value,
+                $propertyQuery->getIdentifier(),
+                $propertyToSet,
+            );
+        } else {
+            throw new RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
         }
     }
 
@@ -55,16 +54,23 @@ class BqOrderPropertiesManager
     /**
      * @throws BqRequestException
      */
-    private function createProperty(string $value, string $orderId, string $propertyIdentifier): void
+    private function createProperty(string $value, string $propertyIdentifier, string $orderId): void
     {
+        $sessionProperties = $this->bqRestManagerV1->get('session')->default_properties;
+        $matchingProperties = array_filter($sessionProperties, fn($p) => $p->identifier === $propertyIdentifier);
+        if (count($matchingProperties) === 1) {
+            $propertyType = array_pop($matchingProperties)->property_type;
+        } else {
+            throw new BqRequestException("no matching property found in session");
+        }
         $postFields = [
             'property' => [
                 'identifier' => $propertyIdentifier,
                 'value' => $value,
                 'owner_id' => $orderId,
                 'isNew' => 'true',
-                'property_type' => 'Property::TextField',
-                'type' => 'Property::TextField',
+                'property_type' => $propertyType,
+                'type' => $propertyType,
                 'owner_type' => 'Order',
             ],
         ];
@@ -74,18 +80,19 @@ class BqOrderPropertiesManager
     /**
      * @throws BqRequestException
      */
-    private function updateProperty(string $value, string $orderId, string $propertyIdentifier, string $propertyId): void
+    private function updateProperty(string $value, string $propertyIdentifier, $propertyToSet): void
     {
+        $newValue = $propertyToSet->attributes->value . "\n" . $value;
         $postFields = [
             'property' => [
                 'identifier' => $propertyIdentifier,
-                'value' => $value,
-                'owner_id' => $orderId,
-                'property_type' => 'Property::TextField',
-                'type' => 'Property::TextField',
+                'value' => $newValue,
+                'owner_id' => $propertyToSet->attributes->owner_id,
+                'property_type' => $propertyToSet->attributes->type,
+                'type' => $propertyToSet->attributes->type,
                 'owner_type' => "Order"
             ]
         ];
-        $this->bqRestManagerV1->put('properties/' . $propertyId, $postFields);
+        $this->bqRestManagerV1->put('properties/' . $propertyToSet->id, $postFields);
     }
 }
