@@ -20,8 +20,17 @@ class BqOrderPropertiesManager
 
     /**
      * @throws BqRequestException
+     * @deprecated see BqOrderPropertiesManager->createOrUpdateStringProperty, this function was renamed
      */
     public function createOrUpdateProperty(string $orderId, string $value, BqOrderPropertyQuery $propertyQuery): void
+    {
+        self::createOrUpdateStringProperty($orderId, $value, $propertyQuery);
+    }
+
+    /**
+     * @throws BqRequestException
+     */
+    public function createOrUpdateStringProperty(string $orderId, string $value, BqOrderPropertyQuery $propertyQuery): void
     {
         $properties = self::getProperties($orderId)->data;
         $matchingProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyQuery->getName());
