@@ -5,7 +5,7 @@ namespace Meisterwerk\BqUtils;
 class BqUtil
 {
     /**
-     * @deprecated see BqUtil->extractBqPropertyObjects, this function was renamed
+     * @deprecated see BqUtil->extractBqPropertyValue, this function was renamed
      */
     public static function extractBqProperty($properties, $identifier): string {
         return self::extractBqPropertyValue($properties, $identifier);
