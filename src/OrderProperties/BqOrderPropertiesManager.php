@@ -73,7 +73,7 @@ class BqOrderPropertiesManager
             throw new BqRequestException("no matching property found in session");
         }
         if (!$propertyType->isStringProperty()) {
-            throw new BqRequestException("property isn't a string property (allowed are: Single- and MultiLineText)");
+            throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
         }
         $postFields = [
             'property' => [
@@ -95,7 +95,7 @@ class BqOrderPropertiesManager
     private function updateProperty(string $value, string $propertyIdentifier, $propertyToSet): void
     {   $propertyType = PropertyTypes::from($propertyToSet->attributes->type);
         if (!$propertyType->isStringProperty()) {
-            throw new BqRequestException("property isn't a string property (allowed are: Single- and MultiLineText)");
+            throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
         }
         $newValue = $propertyToSet->attributes->value . "\n" . $value;
         $postFields = [
