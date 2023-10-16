@@ -4,10 +4,25 @@ namespace Meisterwerk\BqUtils;
 
 class BqUtil
 {
-    public static function extractBqProperty($properties, $identifier): String {
+    /**
+     * @deprecated see BqUtil->extractBqPropertyValue, this function was renamed
+     */
+    public static function extractBqProperty($properties, $identifier): string {
+        return self::extractBqPropertyValue($properties, $identifier);
+    }
+
+    public static function extractBqPropertyValue($properties, $identifier): string {
         // array_filter keeps keys -> we have to reindex it with array_values
-        $phoneProperties = array_values(array_filter($properties, fn($p) => $p->identifier === $identifier));
-        return count($phoneProperties) === 1 ? $phoneProperties[0]->value : '';
+        $matchingProperties = array_values(array_filter($properties, fn($p) => $p->identifier === $identifier));
+        return count($matchingProperties) === 1 ? $matchingProperties[0]->value : '';
+    }
+
+    public static function extractBqPropertyObject($properties, $identifier) {
+        $matchingProperties = array_filter($properties, fn ($property) => ($property->identifier === $identifier));
+        if (count($matchingProperties) === 1) {
+            return array_pop($matchingProperties);
+        }
+        return null;
     }
 
     /**
@@ -22,7 +37,7 @@ class BqUtil
      * ]
      *
      */
-    public static function attachChildrenToParents($bqLines):array {
+    public static function attachChildrenToParents($bqLines): array {
 
         // get all lines without parent
         $lines = array_map(
