@@ -71,18 +71,24 @@ class BqUtil
      */
     public static function request($curlOptions, $jsonAssociative = false, $jsonDecode = true) {
         $curl = curl_init();
+
+        // CURLOPT_FAILONERROR is disabled intentionally, otherwise it is not possible to access the Error-Response
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FAILONERROR, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
         curl_setopt($curl, CURLOPT_ENCODING, '');
+
         curl_setopt_array($curl, $curlOptions);
         $response = curl_exec($curl);
-        if (curl_error($curl)) {
+
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if($response === false) {
             throw new BqRequestException(curl_error($curl));
-        } else if (isset(json_decode($response)->error)) {
-            throw new BqRequestException($response);
         }
+        if($httpCode >= 400) {
+            throw new BqRequestException($response, $httpCode);
+        }
+
         curl_close($curl);
         if($jsonDecode) {
             return json_decode($response, $jsonAssociative);
