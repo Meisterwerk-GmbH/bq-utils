@@ -17,7 +17,7 @@ class BqRestManager
     /**
      * @throws BqRequestException
      */
-    public function get(string $endpoint)
+    public function get(string $endpoint, $jsonAssociative = false, $jsonDecode = true)
     {
         return BqUtil::request([
             CURLOPT_URL => $this->url .  $endpoint,
@@ -25,13 +25,13 @@ class BqRestManager
             CURLOPT_HTTPHEADER => [
                 'Authorization: Bearer '.$this->apiKey
             ],
-        ]);
+        ], jsonAssociative: $jsonAssociative, jsonDecode: $jsonDecode);
     }
 
     /**
      * @throws BqRequestException
      */
-    public function put(string $endpoint, $postFields)
+    public function put(string $endpoint, $postFields, $jsonAssociative = false, $jsonDecode = true)
     {
         return BqUtil::request([
             CURLOPT_URL => $this->url . $endpoint,
@@ -42,15 +42,15 @@ class BqRestManager
                 'Accept: application/json',
                 'Content-Type: application/json',
             ],
-        ]);
+        ], jsonAssociative: $jsonAssociative, jsonDecode: $jsonDecode);
     }
 
     /**
      * @throws BqRequestException
      */
-    public function post(string $endpoint, $postFields)
+    public function post(string $endpoint, $postFields, $jsonAssociative = false, $jsonDecode = true)
     {
-        return  BqUtil::request([
+        return BqUtil::request([
             CURLOPT_URL => $this->url . $endpoint,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($postFields),
@@ -59,6 +59,6 @@ class BqRestManager
                 'Accept: application/json',
                 'Content-Type: application/json',
             ],
-        ]);
+        ], jsonAssociative: $jsonAssociative, jsonDecode: $jsonDecode);
     }
 }
