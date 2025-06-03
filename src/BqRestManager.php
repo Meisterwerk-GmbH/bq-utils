@@ -61,4 +61,19 @@ class BqRestManager
             ],
         ], $jsonAssociative, $jsonDecode);
     }
+
+    /**
+     * @throws BqRequestException
+     */
+    public function delete(string $endpoint, $jsonAssociative = false, $jsonDecode = true)
+    {
+        return BqUtil::request([
+            CURLOPT_URL => $this->url . $endpoint,
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Bearer '.$this->apiKey,
+                'Content-Type: application/json'
+            ],
+        ], $jsonAssociative, $jsonDecode);
+    }
 }
