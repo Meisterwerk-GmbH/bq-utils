@@ -25,7 +25,7 @@ class BqRestManager
             CURLOPT_HTTPHEADER => [
                 'Authorization: Bearer '.$this->apiKey
             ],
-        ], jsonAssociative: $jsonAssociative, jsonDecode: $jsonDecode);
+        ], $jsonAssociative, $jsonDecode);
     }
 
     /**
@@ -42,7 +42,7 @@ class BqRestManager
                 'Accept: application/json',
                 'Content-Type: application/json',
             ],
-        ], jsonAssociative: $jsonAssociative, jsonDecode: $jsonDecode);
+        ], $jsonAssociative, $jsonDecode);
     }
 
     /**
@@ -59,6 +59,6 @@ class BqRestManager
                 'Accept: application/json',
                 'Content-Type: application/json',
             ],
-        ], jsonAssociative: $jsonAssociative, jsonDecode: $jsonDecode);
+        ], $jsonAssociative, $jsonDecode);
     }
 }
