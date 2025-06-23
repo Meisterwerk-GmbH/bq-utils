@@ -28,9 +28,9 @@ enum Language: string
         return $language ?? self::GERMAN;
     }
 
-    public static function fromOrderV4($order): Language
+    public static function fromOrderDataV4($orderData): Language
     {
-        $orderProperties = $order->data->attributes->properties;
+        $orderProperties = $orderData->attributes->properties;
         if (property_exists($orderProperties, 'sprache')) {
             $languageString = $orderProperties->sprache;
             $language = self::tryFrom($languageString);
