@@ -47,19 +47,19 @@ class BqWebhookManager
             $data[$event] = $response->data->id;
             file_put_contents($this->webhookFilePath, json_encode($data, JSON_PRETTY_PRINT));
         } catch (BqRequestException $e) {
-            var_dump('Fehler bei Request: ' . $e->getMessage() . PHP_EOL . 'Webhook wurde nicht erstellt.');
+            var_dump('Request error: ' . $e->getMessage() . PHP_EOL . 'Webhook was not created.');
         }
     }
 
     public function unregister($event): void
     {
         if(!file_exists($this->webhookFilePath)) {
-            var_dump('Fehler: Keine Datei unter dem Pfad auffindbar!');
+            var_dump('Error: No file can be found under the path!');
             throw new \Exception();
         }
         $data = json_decode(file_get_contents($this->webhookFilePath), true);
         if(!array_key_exists($event, $data)) {
-            var_dump('Fehler: Angegebene Datei enthält keine Webhook-ID zu diesem Event!');
+            var_dump('Error: Specified file does not contain a webhook ID for this event!');
             throw new \Exception();
         }
         $webhookId = $data[$event];
@@ -68,7 +68,7 @@ class BqWebhookManager
             unset($data[$event]);
             file_put_contents($this->webhookFilePath, json_encode($data, JSON_PRETTY_PRINT));
         } catch (BqRequestException $e) {
-            var_dump('Fehler bei Request: ' . $e->getMessage() . PHP_EOL . 'Webhook wurde nicht gelöscht.');
+            var_dump('Request error: ' . $e->getMessage() . PHP_EOL . 'Webhook has not been deleted.');
         }
     }
 }
