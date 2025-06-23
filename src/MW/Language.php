@@ -10,6 +10,15 @@ enum Language: string
 
     case ENGLISH = 'English';
 
+    public function getIsoLanguageCode(): string
+    {
+        return match ($this) {
+            self::GERMAN => 'de',
+            self::FRENCH => 'fr',
+            self::ENGLISH => 'en',
+        };
+    }
+
     public static function fromOrderV1($order): Language
     {
         if (property_exists($order->properties_attributes, 'sprache')) {
