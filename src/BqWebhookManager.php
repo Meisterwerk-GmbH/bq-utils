@@ -6,20 +6,12 @@ class BqWebhookManager
 {
     private const BQ_WEBHOOK_ENDPOINT = '/webhook_endpoints';
 
-    private string $webhookPath;
-
-    private string $webhookSecret;
-
-    private string $webhookFilePath;
-
-    private BqRestManager $restManagerV4;
-
-    public function __construct(string $bqApiKey, string $webhookPath, string $webhookSecret, string $webhookFilePath)
-    {
-        $this->webhookPath = $webhookPath;
-        $this->webhookSecret = $webhookSecret;
-        $this->webhookFilePath = $webhookFilePath;
-        $this->restManagerV4 = new BqRestManager($bqApiKey, 'https://rentshop.booqable.com/api/4');
+    public function __construct(
+        private string $webhookPath,
+        private string $webhookSecret,
+        private string $webhookFilePath,
+        private BqRestManager $restManagerV4
+    ) {
     }
 
     public function register($event): void
