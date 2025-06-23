@@ -10,13 +10,22 @@ enum Language: string
 
     case ENGLISH = 'English';
 
-    public static function fromOrderAttributes($orderAttributes): Language
+    public static function fromOrderAttributesV1($order): Language
     {
-        if (property_exists($orderAttributes->properties, 'sprache')) {
-            $languageString = $orderAttributes->properties->sprache;
+        if (property_exists($order->properties_attributes, 'sprache')) {
+            $languageString = $order->properties_attributes->sprache;
             $language = self::tryFrom($languageString);
         }
         return $language ?? self::GERMAN;
     }
 
+    public static function fromOrderAttributesV4($order): Language
+    {
+        $orderProperties = $order->data->attributes->properties;
+        if (property_exists($orderProperties, 'sprache')) {
+            $languageString = $orderProperties->sprache;
+            $language = self::tryFrom($languageString);
+        }
+        return $language ?? self::GERMAN;
+    }
 }
