@@ -2,7 +2,7 @@
 
 namespace Meisterwerk\BqUtils;
 
-class WebhookManager
+class BqWebhookManager
 {
     private const BQ_WEBHOOK_ENDPOINT = '/webhook_endpoints';
 
