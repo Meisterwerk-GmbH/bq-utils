@@ -24,7 +24,9 @@ class BqWebhookManager
 
     public function register($event): void
     {
-        $targetUrl = 'https://'.$this->webhookPath.'?secret='.urlencode($this->webhookSecret).'&dummy2-param='.urlencode($event);
+        $encodedSecret = urlencode($this->webhookSecret);
+        $encodedEvent = urlencode($event);
+        $targetUrl = "https://{$this->webhookPath}?secret={$encodedSecret}&dummy-param={$encodedEvent}";
         $postfields = [
             'data' => [
                 'type' => 'webhook_endpoints',
