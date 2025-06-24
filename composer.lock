@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdd28ceb640fd5ba2f67fd4f5e014e7c",
+    "content-hash": "01bd216eb352d2b4a1bf1156a597ec5d",
     "packages": [
         {
             "name": "meisterwerk/core",
-            "version": "dev-feature/translation-manager",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Meisterwerk-GmbH/core.git",
-                "reference": "f0487062a72aaea568f45818fbdd2ed86f5ec6ce"
+                "reference": "5a8483130f6c7ec0d6c1d7e4b5fcd4c5a21454bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Meisterwerk-GmbH/core/zipball/f0487062a72aaea568f45818fbdd2ed86f5ec6ce",
-                "reference": "f0487062a72aaea568f45818fbdd2ed86f5ec6ce",
+                "url": "https://api.github.com/repos/Meisterwerk-GmbH/core/zipball/5a8483130f6c7ec0d6c1d7e4b5fcd4c5a21454bf",
+                "reference": "5a8483130f6c7ec0d6c1d7e4b5fcd4c5a21454bf",
                 "shasum": ""
             },
             "require": {
@@ -40,9 +40,9 @@
             "description": "These are handy functions for php projects.",
             "support": {
                 "issues": "https://github.com/Meisterwerk-GmbH/core/issues",
-                "source": "https://github.com/Meisterwerk-GmbH/core/tree/feature/translation-manager"
+                "source": "https://github.com/Meisterwerk-GmbH/core/tree/v1.0.8"
             },
-            "time": "2025-06-24T08:13:58+00:00"
+            "time": "2025-06-24T09:17:08+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -266,9 +266,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "meisterwerk/core": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
