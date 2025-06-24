@@ -5,7 +5,7 @@ namespace Meisterwerk\BqUtils\MW;
 class MwBqUtil
 {
     /**
-     * Structure of $orderData:
+     * Structure of $order:
      * [
      *      "id" => "1234",
      *      "properties_attributes": [
