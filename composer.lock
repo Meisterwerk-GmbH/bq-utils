@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Meisterwerk-GmbH/core.git",
-                "reference": "b040b67cfed3f6cd97a44e3c5479ec79d2a3b978"
+                "reference": "f0487062a72aaea568f45818fbdd2ed86f5ec6ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Meisterwerk-GmbH/core/zipball/b040b67cfed3f6cd97a44e3c5479ec79d2a3b978",
-                "reference": "b040b67cfed3f6cd97a44e3c5479ec79d2a3b978",
+                "url": "https://api.github.com/repos/Meisterwerk-GmbH/core/zipball/f0487062a72aaea568f45818fbdd2ed86f5ec6ce",
+                "reference": "f0487062a72aaea568f45818fbdd2ed86f5ec6ce",
                 "shasum": ""
             },
             "require": {
@@ -42,7 +42,7 @@
                 "issues": "https://github.com/Meisterwerk-GmbH/core/issues",
                 "source": "https://github.com/Meisterwerk-GmbH/core/tree/feature/translation-manager"
             },
-            "time": "2025-06-23T09:47:22+00:00"
+            "time": "2025-06-24T08:13:58+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

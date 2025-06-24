@@ -10,18 +10,14 @@ class MwBqTranslationManager
 
     public function __construct(string $projectPath)
     {
-        $languages = array_map(
-            fn(Language $lang): string => $lang->getIsoLanguageCode(),
-            Language::cases()
-        );
-        $this->translationManager = new TranslationManager($projectPath, $languages);
+        $this->translationManager = new TranslationManager($projectPath);
     }
 
-    public function getText(Language $lang, string $keyString, array $templateVars = []): string
+    public function getText(string $keyString, Language $lang = Language::GERMAN, array $templateVars = []): string
     {
         return $this->translationManager->getText(
-            $lang->getIsoLanguageCode(),
             $keyString,
+            $lang->getIsoLanguageCode(),
             $templateVars
         );
     }
