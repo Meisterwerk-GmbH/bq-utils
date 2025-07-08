@@ -10,16 +10,30 @@ class BqUtil
      * @deprecated see BqUtil->extractBqPropertyValue, this function was renamed
      */
     public static function extractBqProperty($properties, $identifier): string {
-        return self::extractBqPropertyValue($properties, $identifier);
+        return self::extractBqPropertyValueV1($properties, $identifier);
     }
 
+    /**
+     * @deprecated see BqUtil->extractBqPropertyValueV1, this function was renamed
+     */
     public static function extractBqPropertyValue($properties, $identifier): string {
+        return self::extractBqPropertyValueV1($properties, $identifier);
+    }
+
+    /**
+     * @deprecated see BqUtil->extractBqPropertyObjectV1, this function was renamed
+     */
+    public static function extractBqPropertyObject($properties, $identifier) {
+        return self::extractBqPropertyObjectV1($properties, $identifier);
+    }
+
+    public static function extractBqPropertyValueV1($properties, $identifier): string {
         // array_filter keeps keys -> we have to reindex it with array_values
         $matchingProperties = array_values(array_filter($properties, fn($p) => $p->identifier === $identifier));
         return count($matchingProperties) === 1 ? $matchingProperties[0]->value : '';
     }
 
-    public static function extractBqPropertyObject($properties, $identifier) {
+    public static function extractBqPropertyObjectV1($properties, $identifier) {
         $matchingProperties = array_filter($properties, fn ($property) => ($property->identifier === $identifier));
         if (count($matchingProperties) === 1) {
             return array_pop($matchingProperties);
@@ -27,7 +41,23 @@ class BqUtil
         return null;
     }
 
+    public static function extractBqPropertyValueV4($properties, $identifier): string {
+        // array_filter keeps keys -> we have to reindex it with array_values
+        $matchingProperties = array_values(array_filter($properties, fn($p) => $p->attributes->identifier === $identifier));
+        return count($matchingProperties) === 1 ? $matchingProperties[0]->attributes->value : '';
+    }
+
+    public static function extractBqPropertyObjectV4($properties, $identifier) {
+        $matchingProperties = array_filter($properties, fn ($property) => ($property->attributes->identifier === $identifier));
+        if (count($matchingProperties) === 1) {
+            return array_pop($matchingProperties);
+        }
+        return null;
+    }
+
     /**
+     * @deprecated see BqUtil->attachChildrenToParentsV1, this function was renamed
+     *
      * generates the following structure from bq-lines:
      *
      * [
@@ -40,7 +70,21 @@ class BqUtil
      *
      */
     public static function attachChildrenToParents($bqLines): array {
+        return self::attachChildrenToParentsV1($bqLines);
+    }
 
+    /**
+     * generates the following structure from bq-lines:
+     *
+     * [
+     *      [
+     *          'bqLine' => NORMAL-BQ-LINE
+     *          'childBQLines' => ARRAY-OF-BQ-LINES
+     *      ],
+     *      ...
+     * ]
+     */
+    public static function attachChildrenToParentsV1($bqLines): array {
         // get all lines without parent
         $lines = array_map(
             fn($l) => ['bqLine' => $l, 'childBQLines' => []],
@@ -67,6 +111,46 @@ class BqUtil
 
         return $lines;
     }
+
+    /**
+     * generates the following structure from bq-lines:
+     *
+     * [
+     *      [
+     *          'bqLine' => NORMAL-BQ-LINE
+     *          'childBQLines' => ARRAY-OF-BQ-LINES
+     *      ],
+     *      ...
+     * ]
+     */
+    public static function attachChildrenToParentsV4($bqLines): array {
+        // get all lines without parent
+        $lines = array_map(
+            fn($l) => ['bqLine' => $l, 'childBQLines' => []],
+            array_filter(
+                $bqLines,
+                fn($l) => is_null($l->attributes->parent_line_id)
+            )
+        );
+
+        // get all child-lines
+        $childBQLines = array_filter(
+            $bqLines,
+            fn($l) => !is_null($l->attributes->parent_line_id)
+        );
+
+        // append all child-lines to their parents
+        foreach ($childBQLines as $childBQLine) {
+            foreach ($lines as $lineIndex => $line) {
+                if ($line['bqLine']->id === $childBQLine->attributes->parent_line_id) {
+                    $lines[$lineIndex]['childBQLines'][] = $childBQLine;
+                }
+            }
+        }
+
+        return $lines;
+    }
+
 
     /**
      * @throws BqRequestException
