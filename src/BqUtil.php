@@ -2,6 +2,8 @@
 
 namespace Meisterwerk\BqUtils;
 
+use Meisterwerk\BqUtils\MW\MwBqUtil;
+
 class BqUtil
 {
     /**
@@ -104,7 +106,10 @@ class BqUtil
         return self::request($curlOptions, $jsonAssociative);
     }
 
+    /**
+     * @deprecated see MwBqUtil->getOrderLinkHtmlV1, this function was moved and renamed
+     */
     public static function getOrderLinkHtml($order): string {
-        return '<a href="https://rentshop.booqable.com/orders/' . $order->id . '">#' . $order->number . '</a>';
+        return MwBqUtil::getOrderLinkHtmlV1($order);
     }
 }
