@@ -40,4 +40,16 @@ class MwBqUtil
         $orderNumber = $orderData->attributes->number;
         return "<a href=\"https://rentshop.booqable.com/orders/{$orderId}\">#{$orderNumber}</a>";
     }
+
+    /**
+     * Structure of $data:
+     * [
+     *      "id" => "1234",
+     *      "number": "1234",
+     *      ...
+     * ]
+     */
+    public static function getOrderLinkHtmlHookData($data): string {
+        return self::getOrderLinkHtmlV1($data);
+    }
 }
