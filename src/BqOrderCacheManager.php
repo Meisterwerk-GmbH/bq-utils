@@ -46,7 +46,10 @@ class BqOrderCacheManager
     {
         ftruncate($this->fileHandle, 0);    //Truncate the file to 0
         rewind($this->fileHandle);           //Set write pointer to beginning of file
-        fwrite($this->fileHandle, json_encode($this->order, JSON_PRETTY_PRINT));    //Write the new Hit Count
+        fwrite(
+            $this->fileHandle,
+            json_encode($this->order, JSON_PRETTY_PRINT)
+        );    //Write the new Hit Count
         flock($this->fileHandle, LOCK_UN);
     }
 

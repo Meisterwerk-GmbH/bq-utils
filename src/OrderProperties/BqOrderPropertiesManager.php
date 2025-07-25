@@ -30,10 +30,15 @@ class BqOrderPropertiesManager
     /**
      * @throws BqRequestException
      */
-    public function createOrUpdateStringProperty(string $orderId, string $value, BqOrderPropertyQuery $propertyQuery): void
+    public function createOrUpdateStringProperty(
+        string $orderId, string $value, BqOrderPropertyQuery $propertyQuery
+    ): void
     {
         $properties = self::getProperties($orderId)->data;
-        $matchingProperties = array_filter($properties, fn($property) => $property->attributes->name === $propertyQuery->getName());
+        $matchingProperties = array_filter(
+            $properties,
+            fn($property) => $property->attributes->name === $propertyQuery->getName()
+        );
         $propertyToSet = array_pop($matchingProperties);
         if ($propertyToSet === null) {
             self::createProperty(
@@ -66,7 +71,10 @@ class BqOrderPropertiesManager
     private function createProperty(string $value, string $propertyIdentifier, string $orderId): void
     {
         $sessionProperties = $this->bqRestManagerV1->get('session')->default_properties;
-        $matchingProperties = array_filter($sessionProperties, fn($p) => $p->identifier === $propertyIdentifier);
+        $matchingProperties = array_filter(
+            $sessionProperties,
+            fn($p) => $p->identifier === $propertyIdentifier
+        );
         if (count($matchingProperties) === 1) {
             $propertyType = PropertyTypes::from(array_pop($matchingProperties)->property_type);
         } else {
