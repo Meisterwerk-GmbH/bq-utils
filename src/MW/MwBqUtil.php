@@ -5,6 +5,8 @@ namespace Meisterwerk\BqUtils\MW;
 class MwBqUtil
 {
     /**
+     * @deprecated see MwBqUtil->getOrderLinkHtmlV4, API version V1 will no longer be supported
+     *
      * Structure of $order:
      * [
      *      "id" => "1234",
@@ -50,6 +52,6 @@ class MwBqUtil
      * ]
      */
     public static function getOrderLinkHtmlHookData($data): string {
-        return self::getOrderLinkHtmlV1($data);
+        return "<a href=\"https://rentshop.booqable.com/orders/{$data->id}\">#{$data->number}</a>";
     }
 }

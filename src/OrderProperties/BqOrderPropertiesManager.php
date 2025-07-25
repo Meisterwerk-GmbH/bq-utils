@@ -46,6 +46,7 @@ class BqOrderPropertiesManager
 
     /**
      * @throws BqRequestException
+     * @deprecated see BqOrderPropertiesManager->createOrUpdateStringPropertyV4, API version V1 will no longer be supported
      */
     public function createOrUpdateStringPropertyV1(
         string $orderId, string $value, BqOrderPropertyQuery $propertyQuery
@@ -114,6 +115,7 @@ class BqOrderPropertiesManager
 
     /**
      * @throws BqRequestException
+     * @deprecated see BqOrderPropertiesManager->getPropertiesV4, API version V1 will no longer be supported
      */
     private function getPropertiesV1(string $orderId)
     {
@@ -139,6 +141,7 @@ class BqOrderPropertiesManager
 
     /**
      * @throws BqRequestException
+     * @deprecated see BqOrderPropertiesManager->createPropertyV4, API version V1 will no longer be supported
      */
     private function createPropertyV1(string $value, string $propertyIdentifier, string $orderId): void
     {
@@ -216,6 +219,7 @@ class BqOrderPropertiesManager
 
     /**
      * @throws BqRequestException
+     * @deprecated see BqOrderPropertiesManager->updatePropertyV4, API version V1 will no longer be supported
      */
     private function updatePropertyV1(string $value, string $propertyIdentifier, $propertyToSet): void
     {

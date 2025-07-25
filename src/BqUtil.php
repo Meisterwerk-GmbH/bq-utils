@@ -27,6 +27,9 @@ class BqUtil
         return self::extractBqPropertyObjectV1($properties, $identifier);
     }
 
+    /**
+     * @deprecated see BqUtil->extractBqPropertyValueV4, API version V1 will no longer be supported
+     */
     public static function extractBqPropertyValueV1($properties, $identifier): string {
         // array_filter keeps keys -> we have to reindex it with array_values
         $matchingProperties = array_values(
@@ -38,6 +41,9 @@ class BqUtil
         return count($matchingProperties) === 1 ? $matchingProperties[0]->value : '';
     }
 
+    /**
+     * @deprecated see BqUtil->extractBqPropertyObjectV4, API version V1 will no longer be supported
+     */
     public static function extractBqPropertyObjectV1($properties, $identifier) {
         $matchingProperties = array_filter(
             $properties,
@@ -90,6 +96,8 @@ class BqUtil
     }
 
     /**
+     * @deprecated see BqUtil->attachChildrenToParentsV4, API version V1 will no longer be supported
+     *
      * generates the following structure from bq-lines:
      *
      * [
