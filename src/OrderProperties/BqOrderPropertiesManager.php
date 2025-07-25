@@ -15,8 +15,9 @@ class BqOrderPropertiesManager
     private BqRestManager $bqRestManagerV4;
 
 
-    public function __construct(BqRestManager $bqRestManagerV1, BqRestManager $bqRestManagerV3, BqRestManager $bqRestManagerV4)
-    {
+    public function __construct(
+        BqRestManager $bqRestManagerV1, BqRestManager $bqRestManagerV3, BqRestManager $bqRestManagerV4
+    ) {
         $this->bqRestManagerV1 = $bqRestManagerV1;
         $this->bqRestManagerV3 = $bqRestManagerV3;
         $this->bqRestManagerV4 = $bqRestManagerV4;
