@@ -29,12 +29,20 @@ class BqUtil
 
     public static function extractBqPropertyValueV1($properties, $identifier): string {
         // array_filter keeps keys -> we have to reindex it with array_values
-        $matchingProperties = array_values(array_filter($properties, fn($p) => $p->identifier === $identifier));
+        $matchingProperties = array_values(
+            array_filter(
+                $properties,
+                fn($p) => $p->identifier === $identifier
+            )
+        );
         return count($matchingProperties) === 1 ? $matchingProperties[0]->value : '';
     }
 
     public static function extractBqPropertyObjectV1($properties, $identifier) {
-        $matchingProperties = array_filter($properties, fn ($property) => ($property->identifier === $identifier));
+        $matchingProperties = array_filter(
+            $properties,
+            fn ($property) => ($property->identifier === $identifier)
+        );
         if (count($matchingProperties) === 1) {
             return array_pop($matchingProperties);
         }
@@ -43,12 +51,20 @@ class BqUtil
 
     public static function extractBqPropertyValueV4($properties, $identifier): string {
         // array_filter keeps keys -> we have to reindex it with array_values
-        $matchingProperties = array_values(array_filter($properties, fn($p) => $p->attributes->identifier === $identifier));
+        $matchingProperties = array_values(
+            array_filter(
+                $properties,
+                fn($p) => $p->attributes->identifier === $identifier
+            )
+        );
         return count($matchingProperties) === 1 ? $matchingProperties[0]->attributes->value : '';
     }
 
     public static function extractBqPropertyObjectV4($properties, $identifier) {
-        $matchingProperties = array_filter($properties, fn ($property) => ($property->attributes->identifier === $identifier));
+        $matchingProperties = array_filter(
+            $properties,
+            fn ($property) => ($property->attributes->identifier === $identifier)
+        );
         if (count($matchingProperties) === 1) {
             return array_pop($matchingProperties);
         }
