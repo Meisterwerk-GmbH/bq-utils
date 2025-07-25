@@ -180,7 +180,9 @@ class BqOrderPropertiesManager
             fn($p) => $p->attributes->identifier === $property->getIdentifier()
         );
         if (count($matchingProperties) === 1) {
-            $propertyType = PropertyTypesV4::from(array_pop($matchingProperties)->attributes->property_type);
+            $propertyType = PropertyTypesV4::from(
+                array_pop($matchingProperties)->attributes->property_type
+            );
         } else {
             throw new BqRequestException("no matching property found in session");
         }
