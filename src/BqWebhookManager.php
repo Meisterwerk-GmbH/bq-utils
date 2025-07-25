@@ -14,14 +14,6 @@ class BqWebhookManager
     ) {
     }
 
-    /**
-     * @deprecated see BqWebhookManager->registerV4, this function was renamed
-     */
-    public function register($event): void
-    {
-        $this->registerV4($event);
-    }
-
     public function registerV4($event): void
     {
         $encodedSecret = urlencode($this->webhookSecret);
@@ -49,14 +41,6 @@ class BqWebhookManager
         } catch (BqRequestException $e) {
             var_dump('Request error: ' . $e->getMessage() . PHP_EOL . 'Webhook was not created.');
         }
-    }
-
-    /**
-     * @deprecated see BqWebhookManager->unregisterV4, this function was renamed
-     */
-    public function unregister($event): void
-    {
-       $this->unregisterV4($event);
     }
 
     public function unregisterV4($event): void

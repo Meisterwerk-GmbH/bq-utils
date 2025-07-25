@@ -19,18 +19,6 @@ enum Language: string
         };
     }
 
-    /**
-     * @deprecated see Language->fromOrderDataV4, API version V1 will no longer be supported
-     */
-    public static function fromOrderV1($order): Language
-    {
-        if (property_exists($order->properties_attributes, 'sprache')) {
-            $languageString = $order->properties_attributes->sprache;
-            $language = self::tryFrom($languageString);
-        }
-        return $language ?? self::GERMAN;
-    }
-
     public static function fromOrderDataV4($orderData): Language
     {
         $orderProperties = $orderData->attributes->properties;
