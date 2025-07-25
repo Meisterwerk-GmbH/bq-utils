@@ -246,7 +246,7 @@ class BqOrderPropertiesManager
      */
     private function updatePropertyV4(string $value, $propertyToSet): void
     {
-        $propertyType = PropertyTypesV1::from($propertyToSet->attributes->property_type);
+        $propertyType = PropertyTypesV4::from($propertyToSet->attributes->property_type);
         if (!$propertyType->isStringProperty()) {
             throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
         }
