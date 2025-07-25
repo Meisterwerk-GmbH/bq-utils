@@ -147,7 +147,7 @@ class BqOrderPropertiesManager
             fn($p) => $p->identifier === $propertyIdentifier
         );
         if (count($matchingProperties) === 1) {
-            $propertyType = PropertyTypes::from(array_pop($matchingProperties)->property_type);
+            $propertyType = PropertyTypesV1::from(array_pop($matchingProperties)->property_type);
         } else {
             throw new BqRequestException("no matching property found in session");
         }
@@ -216,7 +216,7 @@ class BqOrderPropertiesManager
      */
     private function updatePropertyV1(string $value, string $propertyIdentifier, $propertyToSet): void
     {
-        $propertyType = PropertyTypes::from($propertyToSet->attributes->type);
+        $propertyType = PropertyTypesV1::from($propertyToSet->attributes->type);
         if (!$propertyType->isStringProperty()) {
             throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
         }
@@ -239,7 +239,7 @@ class BqOrderPropertiesManager
      */
     private function updatePropertyV4(string $value, $propertyToSet): void
     {
-        $propertyType = PropertyTypes::from($propertyToSet->attributes->property_type);
+        $propertyType = PropertyTypesV1::from($propertyToSet->attributes->property_type);
         if (!$propertyType->isStringProperty()) {
             throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
         }

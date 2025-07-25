@@ -2,7 +2,7 @@
 
 namespace Meisterwerk\BqUtils\OrderProperties;
 
-enum PropertyTypes: string
+enum PropertyTypesV1: string
 {
     case TEXT_FIELD = 'Property::TextField';
 
@@ -18,8 +18,8 @@ enum PropertyTypes: string
     {
         return match($this)
         {
-            PropertyTypes::TEXT_FIELD, PropertyTypes::TEXT_AREA => true,
-            PropertyTypes::PHONE, PropertyTypes::SELECT, PropertyTypes::ADDRESS => false,
+            PropertyTypesV1::TEXT_FIELD, PropertyTypesV1::TEXT_AREA => true,
+            PropertyTypesV1::PHONE, PropertyTypesV1::SELECT, PropertyTypesV1::ADDRESS => false,
         };
     }
 }
