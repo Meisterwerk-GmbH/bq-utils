@@ -94,4 +94,29 @@ class BqUtil
         }
         return $response;
     }
+
+    //todo comment ?include=lines,
+    public static function getOrderLines($bqOrder): array
+    {
+        return self::getObjectsFromRelationshipData(
+            $bqOrder->included ?? [],
+            $bqOrder->data->relationships->lines->data
+        );
+    }
+
+    private static function getObjectsFromRelationshipData($includes, $relationshipData): array
+    {
+        $targetIds = array_values(
+            array_map(
+                fn ($item) => $item->id,
+                $relationshipData
+            )
+        );
+        return array_values(
+            array_filter(
+                $includes,
+                fn ($include) => in_array($include->id, $targetIds)
+            )
+        );
+    }
 }
