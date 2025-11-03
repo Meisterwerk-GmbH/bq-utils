@@ -95,6 +95,48 @@ class BqUtil
         return $response;
     }
 
+    //todo comment ?include=customer.properties
+    public static function getOrderCustomerProperties($bqOrder, $bqCustomer)
+    {
+        $properties = self::getObjectsFromRelationshipData(
+            $bqOrder->included ?? [],
+            $bqCustomer->relationships->properties->data
+        );
+        /*
+        $mappedProperties = [];
+        foreach ($properties as $property) {
+            $mappedProperties[$property->attributes->identifier] = $property;
+        }
+        return $mappedProperties;
+        */
+        $mappedProperties = array_map(
+            fn ($property) => ['key' => $property->attributes->identifier, 'value' => $property],
+            $properties
+        );
+        return array_column(
+            $mappedProperties,
+            'value',
+            'key'
+        );
+    }
+
+    // todo comment ?include=customer
+    public static function getOrderCustomer($bqOrder)
+    {
+        $includes = $bqOrder->included ?? [];
+        $customerId = $bqOrder->data->attributes->customer_id;
+        $possibleCustomers = array_filter(
+            $includes,
+            fn ($include) => $include->id === $customerId
+        );
+        if (count($possibleCustomers) !== 1) {
+            $customer = null;
+        } else {
+            $customer = array_pop($possibleCustomers);
+        }
+        return $customer;
+    }
+
     //todo comment ?include=lines,
     public static function getOrderLines($bqOrder): array
     {
