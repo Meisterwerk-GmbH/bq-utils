@@ -18,7 +18,9 @@ class FileManager
 
     public function __destruct()
     {
-        $this->writeAndUnlock();
+        if($this->fileHandle) {
+            $this->writeAndUnlock();
+        }
     }
 
     public function getFileData($fileName)

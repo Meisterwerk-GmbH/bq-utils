@@ -95,20 +95,30 @@ class BqUtil
         return $response;
     }
 
-    //todo comment ?include=customer.properties
-    public static function getOrderCustomerProperties($bqOrder, $bqCustomer)
+    /**
+     * @param $bqOrder: GET /api/4/orders/{id}?include=customer,customer.properties
+     * @return array:
+     *  [
+     *      'identifier' => {
+     *          'id' => '1234',
+     *          'type' => 'properties',
+     *          'attributes' => {...}
+     *      },
+     *      'identifier' => {
+     *          'id' => '5678',
+     *          'type' => 'properties',
+     *          'attributes' => {...}
+     *      },
+     *      ...
+     *  ]
+     */
+    public static function getOrderCustomerProperties($bqOrder)
     {
+        $bqCustomer = self::getOrderCustomer($bqOrder);
         $properties = self::getObjectsFromRelationshipData(
             $bqOrder->included ?? [],
             $bqCustomer->relationships->properties->data
         );
-        /*
-        $mappedProperties = [];
-        foreach ($properties as $property) {
-            $mappedProperties[$property->attributes->identifier] = $property;
-        }
-        return $mappedProperties;
-        */
         $mappedProperties = array_map(
             fn ($property) => ['key' => $property->attributes->identifier, 'value' => $property],
             $properties
@@ -120,7 +130,9 @@ class BqUtil
         );
     }
 
-    // todo comment ?include=customer
+    /**
+     * @param $bqOrder: GET /api/4/orders/{id}?include=customer
+     */
     public static function getOrderCustomer($bqOrder)
     {
         $includes = $bqOrder->included ?? [];
@@ -137,7 +149,9 @@ class BqUtil
         return $customer;
     }
 
-    //todo comment ?include=lines,
+    /**
+     * @param $bqOrder: GET /api/4/orders/{id}?include=lines
+     */
     public static function getOrderLines($bqOrder): array
     {
         return self::getObjectsFromRelationshipData(
