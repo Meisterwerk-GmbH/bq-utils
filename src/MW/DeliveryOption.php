@@ -2,6 +2,11 @@
 
 namespace Meisterwerk\BqUtils\MW;
 
+/**
+ * The address is sometimes extracted directly from the DeliveryOption,
+ * so we keep the exact string instead of using a regex.
+ * Pickup locations will probably be discontinued in the future.
+ */
 enum DeliveryOption: string
 {
     case PICKUP_BERN = 'Abholung Bern (Sulgenauweg 31, im Hinterhof, 3007 Bern)';
