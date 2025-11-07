@@ -114,20 +114,16 @@ class BqUtil
      */
     public static function getOrderCustomerProperties($bqOrder): array
     {
-        $bqCustomer = self::getOrderCustomer($bqOrder);
         $properties = self::getObjectsFromRelationshipData(
             $bqOrder->included ?? [],
-            $bqCustomer->relationships->properties->data
+                self::getOrderCustomer($bqOrder)->relationships->properties->data
         );
-        $mappedProperties = array_map(
-            fn ($property) => ['key' => $property->attributes->identifier, 'value' => $property],
-            $properties
-        );
-        return array_column(
-            $mappedProperties,
-            'value',
-            'key'
-        );
+        return self::arrayIndex(fn($p) => $p->attributes->identifier, $properties);
+    }
+
+    private static function arrayIndex(callable $callback, array $objects): array
+    {
+        return array_combine(array_map($callback, $objects), $objects);
     }
 
     /**
