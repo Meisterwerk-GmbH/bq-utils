@@ -6,14 +6,14 @@ class FileManager
 {
     private mixed $fileData = null;
 
-    // fileHandle is a resource; this is a special variable, holding a reference to an external resource
+    // fileHandle is a resource of type stream; this is a special variable, holding a reference to an external resource
     private $fileHandle;
 
-    private string $cachePath;
+    private string $directoryPath;
 
-    public function __construct(string $cachePath)
+    public function __construct(string $directoryPath)
     {
-        $this->cachePath = $cachePath;
+        $this->directoryPath = $directoryPath;
     }
 
     public function __destruct()
@@ -28,7 +28,7 @@ class FileManager
         if (!is_null($this->fileData)) {
             throw new \Exception('Already a file locked!');
         }
-        $filePath = $this->cachePath . $fileName . '.json';
+        $filePath = "{$this->directoryPath}{$fileName}.json";
         if (!file_exists($filePath)) {
             file_put_contents($filePath, json_encode((object)[]));
         }
@@ -42,7 +42,7 @@ class FileManager
         $this->fileData = $data;
     }
 
-    public function writeAndUnlock(): void
+    private function writeAndUnlock(): void
     {
         ftruncate($this->fileHandle, 0);    //Truncate the file to 0
         rewind($this->fileHandle);           //Set write pointer to beginning of file
