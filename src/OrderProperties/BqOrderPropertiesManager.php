@@ -4,14 +4,13 @@ namespace Meisterwerk\BqUtils\OrderProperties;
 
 use Meisterwerk\BqUtils\BqRequestException;
 use Meisterwerk\BqUtils\BqRestManager;
-use RuntimeException;
 
 class BqOrderPropertiesManager
 {
     private BqRestManager $bqRestManagerV4;
 
-
-    public function __construct(BqRestManager $bqRestManagerV4) {
+    public function __construct(BqRestManager $bqRestManagerV4)
+    {
         $this->bqRestManagerV4 = $bqRestManagerV4;
     }
 
@@ -19,13 +18,14 @@ class BqOrderPropertiesManager
      * @throws BqRequestException
      */
     public function createOrUpdateStringPropertyV4(
-        string $orderId, string $value, BqOrderPropertyQuery $propertyQuery
-    ): void
-    {
+        string $orderId,
+        string $value,
+        BqOrderPropertyQuery $propertyQuery
+    ): void {
         $properties = self::getPropertiesV4($orderId)->data;
         $matchingProperties = array_filter(
             $properties,
-            fn($property) => $property->attributes->name === $propertyQuery->getName()
+            fn ($property) => $property->attributes->name === $propertyQuery->getName()
         );
         $propertyToSet = array_pop($matchingProperties);
         if ($propertyToSet === null) {
@@ -40,7 +40,7 @@ class BqOrderPropertiesManager
                 $propertyToSet,
             );
         } else {
-            throw new RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
+            throw new \RuntimeException('more than one matching property found with the name: ' . $propertyQuery->getName());
         }
     }
 
@@ -60,17 +60,17 @@ class BqOrderPropertiesManager
         $defaultProperties = $this->bqRestManagerV4->get('default_properties')->data;
         $matchingProperties = array_filter(
             $defaultProperties,
-            fn($p) => $p->attributes->identifier === $property->getIdentifier()
+            fn ($p) => $p->attributes->identifier === $property->getIdentifier()
         );
         if (count($matchingProperties) === 1) {
             $propertyType = PropertyTypesV4::from(
                 array_pop($matchingProperties)->attributes->property_type
             );
         } else {
-            throw new BqRequestException("no matching property found in session");
+            throw new BqRequestException('no matching property found in session');
         }
         if (!$propertyType->isStringProperty()) {
-            throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
+            throw new \RuntimeException('currently, only single- and multi-line-text-properties are tested');
         }
         $postFields = [
             'data' => [
@@ -81,8 +81,8 @@ class BqOrderPropertiesManager
                     'identifier' => $property->getIdentifier(),
                     'value' => $value,
                     'owner_id' => $orderId,
-                    'owner_type' => 'orders'
-                ]
+                    'owner_type' => 'orders',
+                ],
             ],
         ];
         $this->bqRestManagerV4->post('properties', $postFields);
@@ -95,17 +95,17 @@ class BqOrderPropertiesManager
     {
         $propertyType = PropertyTypesV4::from($propertyToSet->attributes->property_type);
         if (!$propertyType->isStringProperty()) {
-            throw new RuntimeException("currently, only single- and multi-line-text-properties are tested");
+            throw new \RuntimeException('currently, only single- and multi-line-text-properties are tested');
         }
         $newValue = $propertyToSet->attributes->value . "\n" . $value;
         $postFields = [
             'data' => [
                 'id' => $propertyToSet->id,
-                'type'=> 'properties',
+                'type' => 'properties',
                 'attributes' => [
-                    'value' => $newValue
-                ]
-            ]
+                    'value' => $newValue,
+                ],
+            ],
         ];
         $this->bqRestManagerV4->put('properties/' . $propertyToSet->id, $postFields);
     }

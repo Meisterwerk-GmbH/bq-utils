@@ -23,10 +23,10 @@ class BqRestManager
     public function get(string $endpoint, $jsonAssociative = false, $jsonDecode = true)
     {
         return BqUtil::request([
-            CURLOPT_URL => $this->url .  $endpoint,
+            CURLOPT_URL => $this->url . $endpoint,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.$this->apiKey
+                'Authorization: Bearer ' . $this->apiKey,
             ],
         ], $jsonAssociative, $jsonDecode);
     }
@@ -41,7 +41,7 @@ class BqRestManager
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => json_encode($postFields),
             CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.$this->apiKey,
+                'Authorization: Bearer ' . $this->apiKey,
                 'Accept: application/json',
                 'Content-Type: application/json',
             ],
@@ -58,7 +58,7 @@ class BqRestManager
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($postFields),
             CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.$this->apiKey,
+                'Authorization: Bearer ' . $this->apiKey,
                 'Accept: application/json',
                 'Content-Type: application/json',
             ],
@@ -74,8 +74,8 @@ class BqRestManager
             CURLOPT_URL => $this->url . $endpoint,
             CURLOPT_CUSTOMREQUEST => 'DELETE',
             CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.$this->apiKey,
-                'Content-Type: application/json'
+                'Authorization: Bearer ' . $this->apiKey,
+                'Content-Type: application/json',
             ],
         ], $jsonAssociative, $jsonDecode);
     }

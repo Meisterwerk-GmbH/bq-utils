@@ -5,6 +5,7 @@ namespace Meisterwerk\BqUtils\OrderProperties;
 class BqOrderPropertyQuery
 {
     private string $name;
+
     private string $identifier;
 
     public function __construct(string $name, string $identifier)
