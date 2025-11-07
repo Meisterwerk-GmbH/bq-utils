@@ -137,12 +137,13 @@ class BqUtil
             $includes,
             fn ($include) => $include->id === $customerId
         );
-        if (count($possibleCustomers) !== 1) {
-            $customer = null;
-        } else {
-            $customer = array_pop($possibleCustomers);
-        }
-        return $customer;
+        return match(count($possibleCustomers)) {
+            0 => null,
+            1 => array_pop($possibleCustomers),
+            default => throw new \RuntimeException(
+                "More than one customer on order #{$bqOrder->data->attributes->number}"
+            ),
+        };
     }
 
     /**
