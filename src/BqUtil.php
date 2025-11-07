@@ -4,18 +4,20 @@ namespace Meisterwerk\BqUtils;
 
 class BqUtil
 {
-    public static function extractBqPropertyValueV4($properties, $identifier): string {
+    public static function extractBqPropertyValueV4($properties, $identifier): string
+    {
         // array_filter keeps keys -> we have to reindex it with array_values
         $matchingProperties = array_values(
             array_filter(
                 $properties,
-                fn($p) => $p->attributes->identifier === $identifier
+                fn ($p) => $p->attributes->identifier === $identifier
             )
         );
         return count($matchingProperties) === 1 ? $matchingProperties[0]->attributes->value : '';
     }
 
-    public static function extractBqPropertyObjectV4($properties, $identifier) {
+    public static function extractBqPropertyObjectV4($properties, $identifier)
+    {
         $matchingProperties = array_filter(
             $properties,
             fn ($property) => ($property->attributes->identifier === $identifier)
@@ -37,20 +39,24 @@ class BqUtil
      *      ...
      * ]
      */
-    public static function attachChildrenToParentsV4($bqLines): array {
+    public static function attachChildrenToParentsV4($bqLines): array
+    {
         // get all lines without parent
         $lines = array_map(
-            fn($l) => ['bqLine' => $l, 'childBQLines' => []],
+            fn ($l) => [
+                'bqLine' => $l,
+                'childBQLines' => [],
+            ],
             array_filter(
                 $bqLines,
-                fn($l) => is_null($l->attributes->parent_line_id)
+                fn ($l) => is_null($l->attributes->parent_line_id)
             )
         );
 
         // get all child-lines
         $childBQLines = array_filter(
             $bqLines,
-            fn($l) => !is_null($l->attributes->parent_line_id)
+            fn ($l) => !is_null($l->attributes->parent_line_id)
         );
 
         // append all child-lines to their parents
@@ -68,7 +74,8 @@ class BqUtil
     /**
      * @throws BqRequestException
      */
-    public static function request($curlOptions, $jsonAssociative = false, $jsonDecode = true) {
+    public static function request($curlOptions, $jsonAssociative = false, $jsonDecode = true)
+    {
         $curl = curl_init();
 
         // CURLOPT_FAILONERROR is disabled intentionally, otherwise it is not possible to access the Error-Response
@@ -81,15 +88,15 @@ class BqUtil
         $response = curl_exec($curl);
 
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if($response === false) {
+        if ($response === false) {
             throw new BqRequestException(curl_error($curl));
         }
-        if($httpCode >= 400) {
+        if ($httpCode >= 400) {
             throw new BqRequestException($response, $httpCode);
         }
 
         curl_close($curl);
-        if($jsonDecode) {
+        if ($jsonDecode) {
             return json_decode($response, $jsonAssociative);
         }
         return $response;
@@ -116,14 +123,9 @@ class BqUtil
     {
         $properties = self::getObjectsFromRelationshipData(
             $bqOrder->included ?? [],
-                self::getOrderCustomer($bqOrder)->relationships->properties->data
+            self::getOrderCustomer($bqOrder)->relationships->properties->data
         );
-        return self::arrayIndex(fn($p) => $p->attributes->identifier, $properties);
-    }
-
-    private static function arrayIndex(callable $callback, array $objects): array
-    {
-        return array_combine(array_map($callback, $objects), $objects);
+        return self::arrayIndex(fn ($p) => $p->attributes->identifier, $properties);
     }
 
     /**
@@ -137,7 +139,7 @@ class BqUtil
             $includes,
             fn ($include) => $include->id === $customerId
         );
-        return match(count($possibleCustomers)) {
+        return match (count($possibleCustomers)) {
             0 => null,
             1 => array_pop($possibleCustomers),
             default => throw new \RuntimeException(
@@ -155,6 +157,11 @@ class BqUtil
             $bqOrder->included ?? [],
             $bqOrder->data->relationships->lines->data
         );
+    }
+
+    private static function arrayIndex(callable $callback, array $objects): array
+    {
+        return array_combine(array_map($callback, $objects), $objects);
     }
 
     private static function getObjectsFromRelationshipData($includes, $relationshipData): array
