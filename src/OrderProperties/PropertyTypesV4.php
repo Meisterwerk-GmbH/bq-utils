@@ -16,8 +16,7 @@ enum PropertyTypesV4: string
 
     public function isStringProperty(): bool
     {
-        return match($this)
-        {
+        return match ($this) {
             PropertyTypesV4::TEXT_FIELD, PropertyTypesV4::TEXT_AREA => true,
             PropertyTypesV4::PHONE, PropertyTypesV4::SELECT, PropertyTypesV4::ADDRESS => false,
         };

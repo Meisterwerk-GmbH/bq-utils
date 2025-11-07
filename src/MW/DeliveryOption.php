@@ -25,8 +25,7 @@ enum DeliveryOption: string
 
     public function isPickup(): bool
     {
-        return match($this)
-        {
+        return match ($this) {
             DeliveryOption::PICKUP_BERN,
             DeliveryOption::PICKUP_BASEL,
             DeliveryOption::PICKUP_ZURICH,
@@ -42,8 +41,7 @@ enum DeliveryOption: string
 
     public function isShipping(): bool
     {
-        return match($this)
-        {
+        return match ($this) {
             DeliveryOption::SHIPPING => true,
 
             DeliveryOption::COURIER_ZURICH,
@@ -55,5 +53,4 @@ enum DeliveryOption: string
             => false,
         };
     }
-
 }
