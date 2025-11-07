@@ -112,7 +112,7 @@ class BqUtil
      *      ...
      *  ]
      */
-    public static function getOrderCustomerProperties($bqOrder)
+    public static function getOrderCustomerProperties($bqOrder): array
     {
         $bqCustomer = self::getOrderCustomer($bqOrder);
         $properties = self::getObjectsFromRelationshipData(

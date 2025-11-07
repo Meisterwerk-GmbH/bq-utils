@@ -1,6 +1,6 @@
 <?php
 
-namespace Meisterwerk\BqUtils;
+namespace Meisterwerk\BqUtils\Manager;
 
 class FileManager
 {
