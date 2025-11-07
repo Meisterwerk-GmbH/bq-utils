@@ -26,10 +26,10 @@ class BqWebhookManager
             'data' => [
                 'type' => 'webhook_endpoints',
                 'attributes' => [
-                    'url'     => $targetUrl,
+                    'url' => $targetUrl,
                     'version' => $v4EventData ? 4 : 1,
-                    'events'  => [
-                        $event
+                    'events' => [
+                        $event,
                     ],
                 ],
             ],
@@ -37,7 +37,7 @@ class BqWebhookManager
         try {
             $response = $this->restManagerV4->post(self::BQ_WEBHOOK_ENDPOINT_V4, $postfields);
             $data = file_exists($this->webhookFilePath)
-                ?  json_decode(file_get_contents($this->webhookFilePath), true)
+                ? json_decode(file_get_contents($this->webhookFilePath), true)
                 : [];
             $data[$event] = $response->data->id;
             file_put_contents($this->webhookFilePath, json_encode($data, JSON_PRETTY_PRINT));
@@ -48,12 +48,12 @@ class BqWebhookManager
 
     public function unregisterV4($event): void
     {
-        if(!file_exists($this->webhookFilePath)) {
+        if (!file_exists($this->webhookFilePath)) {
             var_dump('Error: No file can be found under the path!');
             throw new \Exception();
         }
         $data = json_decode(file_get_contents($this->webhookFilePath), true);
-        if(!array_key_exists($event, $data)) {
+        if (!array_key_exists($event, $data)) {
             var_dump('Error: Specified file does not contain a webhook ID for this event!');
             throw new \Exception();
         }
