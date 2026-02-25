@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Meisterwerk\BqUtils;
 
+/**
+ * @deprecated hook-caching should not be necessary
+ */
 class BqOrderCacheManager
 {
     private mixed $order = null;
