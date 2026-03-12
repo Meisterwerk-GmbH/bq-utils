@@ -11,10 +11,9 @@ class BqWebhookManager
         private string $webhookSecret,
         private string $webhookFilePath,
         private BqRestManager $restManagerV4
-    ) {
-    }
+    ) {}
 
-    public function registerV4($event): void
+    public function registerV4($event, bool $v4EventData = false): void
     {
         $encodedSecret = urlencode($this->webhookSecret);
         $encodedEvent = urlencode($event);
@@ -24,7 +23,7 @@ class BqWebhookManager
                 'type' => 'webhook_endpoints',
                 'attributes' => [
                     'url'     => $targetUrl,
-                    'version' => 1,
+                    'version' => $v4EventData ? 4 : 1,
                     'events'  => [
                         $event
                     ],
