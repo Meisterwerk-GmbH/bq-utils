@@ -4,7 +4,6 @@ namespace Meisterwerk\BqUtils\MW;
 
 class MwBqUtil
 {
-
     /**
      * Structure of $orderData:
      * [
@@ -20,7 +19,8 @@ class MwBqUtil
      *      ]
      * ]
      */
-    public static function getOrderLinkHtmlV4($orderData): string {
+    public static function getOrderLinkHtmlV4($orderData): string
+    {
         $orderId = $orderData->id;
         $orderNumber = $orderData->attributes->number;
         return "<a href=\"https://rentshop.booqable.com/orders/{$orderId}\">#{$orderNumber}</a>";
@@ -34,7 +34,8 @@ class MwBqUtil
      *      ...
      * ]
      */
-    public static function getOrderLinkHtmlHookData($data): string {
+    public static function getOrderLinkHtmlHookData($data): string
+    {
         return "<a href=\"https://rentshop.booqable.com/orders/{$data->id}\">#{$data->number}</a>";
     }
 }
