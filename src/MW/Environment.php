@@ -6,6 +6,6 @@ namespace Meisterwerk\BqUtils\MW;
 
 enum Environment: string
 {
-    case Development = 'entwicklung';
-    case Production = 'produktion';
+    case Development = 'Entwicklung';
+    case Production = 'Produktion';
 }
