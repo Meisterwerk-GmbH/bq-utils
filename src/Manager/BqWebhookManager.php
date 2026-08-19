@@ -3,7 +3,6 @@
 namespace Meisterwerk\BqUtils\Manager;
 
 use Meisterwerk\BqUtils\BqRequestException;
-use Meisterwerk\BqUtils\BqRestManager;
 
 class BqWebhookManager
 {
