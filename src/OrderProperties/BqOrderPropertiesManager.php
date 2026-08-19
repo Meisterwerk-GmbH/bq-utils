@@ -3,7 +3,7 @@
 namespace Meisterwerk\BqUtils\OrderProperties;
 
 use Meisterwerk\BqUtils\BqRequestException;
-use Meisterwerk\BqUtils\BqRestManager;
+use Meisterwerk\BqUtils\Manager\BqRestManager;
 
 class BqOrderPropertiesManager
 {
