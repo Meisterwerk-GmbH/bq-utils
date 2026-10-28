@@ -95,7 +95,6 @@ class BqUtil
             throw new BqRequestException($response, $httpCode);
         }
 
-        curl_close($curl);
         if ($jsonDecode) {
             return json_decode($response, $jsonAssociative);
         }
