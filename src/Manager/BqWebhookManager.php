@@ -18,6 +18,9 @@ class BqWebhookManager
 
     public function registerV4($event, bool $v4EventData = false): void
     {
+        if ($this->webhookSecret === '') {
+            throw new \RuntimeException('Cannot register a webhook with an empty secret.');
+        }
         $encodedSecret = urlencode($this->webhookSecret);
         $encodedEvent = urlencode($event);
         $targetUrl = "https://{$this->webhookPath}?secret={$encodedSecret}&dummy-param={$encodedEvent}";
