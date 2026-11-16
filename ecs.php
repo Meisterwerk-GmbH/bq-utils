@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentThrowTagSniff;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
+use PhpCsFixerCustomFixers\Fixer\NoNullableBooleanTypeFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 use whatwedo\PhpCodingStandard\Fixer\DumpFixer;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->skip([
         DumpFixer::class => null,
+        NoNullableBooleanTypeFixer::class => [
+            __DIR__ . '/src/Model/Event/Order/Order.php',
+            __DIR__ . '/src/Model/Event/Order/Customer.php',
+        ],
         FunctionCommentThrowTagSniff::class => null,
     ]);
     $ecsConfig->sets([__DIR__ . '/vendor/whatwedo/php-coding-standard/config/whatwedo-common.php']);
