@@ -136,6 +136,14 @@ class Order
 
     public function getPropertyValue(string $identifier): mixed
     {
-        return $this->properties[$identifier] ?? null;
+        if (array_key_exists($identifier, $this->properties)) {
+            return $this->properties[$identifier];
+        }
+        foreach ($this->properties as $property) {
+            if (is_array($property) && ($property['identifier'] ?? null) === $identifier) {
+                return $property['value'] ?? null;
+            }
+        }
+        return null;
     }
 }
