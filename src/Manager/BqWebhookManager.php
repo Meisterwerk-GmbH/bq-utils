@@ -16,26 +16,16 @@ class BqWebhookManager
     ) {
     }
 
-    public function registerV4($event, bool $v4EventData = false): void
+    public function registerV4($event, bool $v4EventData = false, ?string $webhookPath = null): void
     {
         if ($this->webhookSecret === '') {
             throw new \RuntimeException('Cannot register a webhook with an empty secret.');
         }
-        $encodedSecret = urlencode($this->webhookSecret);
-        $encodedEvent = urlencode($event);
-        $targetUrl = "https://{$this->webhookPath}?secret={$encodedSecret}&dummy-param={$encodedEvent}";
-        $postfields = [
-            'data' => [
-                'type' => 'webhook_endpoints',
-                'attributes' => [
-                    'url' => $targetUrl,
-                    'version' => $v4EventData ? 4 : 1,
-                    'events' => [
-                        $event,
-                    ],
-                ],
-            ],
-        ];
+        $webhookPath ??= $this->webhookPath;
+        if ($webhookPath === '') {
+            throw new \InvalidArgumentException('Cannot register a webhook with an empty path.');
+        }
+        $postfields = $this->createRegistrationPayload($event, $webhookPath, $v4EventData);
         try {
             $response = $this->restManagerV4->post(self::BQ_WEBHOOK_ENDPOINT_V4, $postfields);
             $data = file_exists($this->webhookFilePath)
@@ -67,5 +57,24 @@ class BqWebhookManager
         } catch (BqRequestException $e) {
             var_dump('Request error: ' . $e->getMessage() . PHP_EOL . 'Webhook has not been deleted.');
         }
+    }
+
+    private function createRegistrationPayload(string $event, string $webhookPath, bool $v4EventData): array
+    {
+        $encodedSecret = urlencode($this->webhookSecret);
+        $encodedEvent = urlencode($event);
+        $targetUrl = "https://{$webhookPath}?secret={$encodedSecret}&dummy-param={$encodedEvent}";
+        return [
+            'data' => [
+                'type' => 'webhook_endpoints',
+                'attributes' => [
+                    'url' => $targetUrl,
+                    'version' => $v4EventData ? 4 : 1,
+                    'events' => [
+                        $event,
+                    ],
+                ],
+            ],
+        ];
     }
 }
